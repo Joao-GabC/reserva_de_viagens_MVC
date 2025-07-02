@@ -14,25 +14,37 @@
         <div>
             <label asp-for="Email"></label><br />
             <input asp-for="Email" />
-            <span asp-validation-for="Email" style="color: red;"></span>
         </div>
         <br />
         <div>
             <label asp-for="Password"></label><br />
             <input asp-for="Password" />
-            <span asp-validation-for="Password" style="color: red;"></span>
         </div>
         <br />
         <div>
             <label asp-for="ConfirmPassword"></label><br />
             <input asp-for="ConfirmPassword" />
-            <span asp-validation-for="ConfirmPassword" style="color: red;"></span>
         </div>
         <div>
-            <label>É conta de atendente?</label><br />
-            <input asp-for="ContaDeAtendente" />
+            <label asp-for="Nome"></label><br />
+            <input asp-for="Nome" />
+        </div>
+        <br />
+        <div>
+            <label asp-for="Telefone"></label><br />
+            <input asp-for="Telefone" />
+        </div>
+        <br />
+        <div>
+            <label asp-for="Cpf"></label><br />
+            <input asp-for="Cpf" />
+        </div>
+        <div>
+            <label asp-for="Passaporte"></label><br />
+            <input asp-for="Passaporte" />
         </div>
         <br />
         <button type="submit">Registrar</button>
     </form>
+    <a asp-controller="Account" asp-action="RegisterAtendente" class="btn btn-primary">Fazer conta de atendente</a>
 </div>
