@@ -20,3 +20,11 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.card {
+    max-width: 20vw;
+}
+.card-img-top {
+    object-fit: cover;
+    height: 50%;
+}

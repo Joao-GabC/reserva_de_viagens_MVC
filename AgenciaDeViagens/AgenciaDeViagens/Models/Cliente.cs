@@ -16,5 +16,8 @@ namespace AgenciaDeViagens.Models
         public string Cpf { get; set; } = string.Empty;
 
         public string Passaporte { get; set; } = string.Empty;
+
+        public ICollection<Pagamento> Pagamentos { get; set; }
+        public ICollection<Reserva> Reservas { get; set; }
     }
 }

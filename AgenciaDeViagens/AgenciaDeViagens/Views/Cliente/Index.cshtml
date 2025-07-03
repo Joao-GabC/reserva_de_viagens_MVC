@@ -1,0 +1,8 @@
+﻿@model Cliente
+<div class="container mt-3">
+	<h1>Olá, @Model.Nome</h1>
+	<hr />
+
+	<a asp-controller="Cliente" asp-action="HistoricoPagamentos" asp-route-id="@Model.Id" class="btn btn-primary">Histórico de Pagamentos</a>
+	<a asp-controller="Cliente" asp-action="HistoricoReservas" asp-route-id="@Model.Id" class="btn btn-primary">Histórico de Reservas</a>
+</div>

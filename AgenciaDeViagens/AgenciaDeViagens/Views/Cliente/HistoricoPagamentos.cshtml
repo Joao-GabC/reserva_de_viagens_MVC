@@ -1,0 +1,33 @@
+﻿@model AgenciaDeViagens.ViewModel.ClienteDadosViewModel
+
+<h1>Histórico de Pagamentos de @Model.ClienteNome</h1>
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>Preço</th>
+			<th>Descrição da Compra</th>
+			<th>Data da Compra</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			@foreach (var item in Model.Pagamentos)
+			{
+				<td>@item.Preco</td>
+			}
+		</tr>
+		<tr>
+			@foreach (var item in Model.Pagamentos)
+			{
+				<td>@item.DescCompra</td>
+			}
+		</tr>
+		<tr>
+			@foreach (var item in Model.Pagamentos)
+			{
+				<td>@item.DataDeCompra</td>
+			}
+		</tr>
+	</tbody>
+</table>

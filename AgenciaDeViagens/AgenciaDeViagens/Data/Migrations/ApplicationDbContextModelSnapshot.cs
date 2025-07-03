@@ -32,8 +32,7 @@ namespace AgenciaDeViagens.Data.Migrations
 
                     b.Property<string>("Cpf")
                         .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -45,17 +44,120 @@ namespace AgenciaDeViagens.Data.Migrations
 
                     b.Property<string>("Passaporte")
                         .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Telefone")
                         .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Clientes");
+                });
+
+            modelBuilder.Entity("AgenciaDeViagens.Models.Pacote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImagemUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("PrecoPorNoite")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pacotes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Descricao = "Pacote para o Hotel Traíra Dourada que inclui café da manhã, almoço e jantar.",
+                            ImagemUrl = "/img/trairadourada.jpg",
+                            PrecoPorNoite = 270.0,
+                            Titulo = "Pacote Completo - Hotel Traíra Dourada"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Descricao = "Pacote para o Hotel Pedra do Monte que inclui café da manhã, almoço e jantar.",
+                            ImagemUrl = "/img/pedradomonte.jpg",
+                            PrecoPorNoite = 150.0,
+                            Titulo = "Pacote Completo - Hotel Pedra do Monte"
+                        });
+                });
+
+            modelBuilder.Entity("AgenciaDeViagens.Models.Pagamento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DataDeCompra")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DescCompra")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PaganteId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Preco")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaganteId");
+
+                    b.ToTable("Pagamento");
+                });
+
+            modelBuilder.Entity("AgenciaDeViagens.Models.Reserva", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DataFim")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataInicio")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("PrecoTotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ReservanteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReservanteId");
+
+                    b.ToTable("Reserva");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -256,6 +358,28 @@ namespace AgenciaDeViagens.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AgenciaDeViagens.Models.Pagamento", b =>
+                {
+                    b.HasOne("AgenciaDeViagens.Models.Cliente", "Cliente")
+                        .WithMany("Pagamentos")
+                        .HasForeignKey("PaganteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+                });
+
+            modelBuilder.Entity("AgenciaDeViagens.Models.Reserva", b =>
+                {
+                    b.HasOne("AgenciaDeViagens.Models.Cliente", "Cliente")
+                        .WithMany("Reservas")
+                        .HasForeignKey("ReservanteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -305,6 +429,13 @@ namespace AgenciaDeViagens.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AgenciaDeViagens.Models.Cliente", b =>
+                {
+                    b.Navigation("Pagamentos");
+
+                    b.Navigation("Reservas");
                 });
 #pragma warning restore 612, 618
         }

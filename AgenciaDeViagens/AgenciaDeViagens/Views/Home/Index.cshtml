@@ -1,8 +1,27 @@
-﻿@{
+﻿@model List<Pacote>
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <h1>Pacotes</h1>
+    <hr />
+
+    <div class="row" id="pacotes">
+        @foreach (var item in Model)
+        {
+            <div class="card my-2 p-0 mx-2">
+                <img src="@item.ImagemUrl" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Titulo</h5>
+                    <p class="card-text">@item.Descricao</p>
+                    <hr />
+                    <div class="d-flex justify-content-between">
+						<p class="card-text text-success my-auto">R$@item.PrecoPorNoite por noite</p>
+						<a asp-controller="Home" asp-action="placeholder" asp-route-id="@item.Id" class="btn btn-success">Agendar</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
