@@ -8,7 +8,7 @@ namespace AgenciaDeViagens.Models
         public int Id { get; set; }
 
         [Required]
-        public double PrecoPorNoite { get; set; }
+        public decimal PrecoPorNoite { get; set; }
 
         [Required]
         public string Titulo { get; set; }
@@ -18,5 +18,8 @@ namespace AgenciaDeViagens.Models
 
         [Required]
         public string ImagemUrl { get; set; }
+
+        [Required]
+        public List<PeriodoIndisponivel> DatasOcupadas { get; set; }
     }
 }

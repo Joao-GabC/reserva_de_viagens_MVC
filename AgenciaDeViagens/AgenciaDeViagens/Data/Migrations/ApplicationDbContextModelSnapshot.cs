@@ -71,8 +71,8 @@ namespace AgenciaDeViagens.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("PrecoPorNoite")
-                        .HasColumnType("float");
+                    b.Property<decimal>("PrecoPorNoite")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Titulo")
                         .IsRequired()
@@ -85,18 +85,18 @@ namespace AgenciaDeViagens.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            Descricao = "Pacote para o Hotel Traíra Dourada que inclui café da manhã, almoço e jantar.",
-                            ImagemUrl = "/img/trairadourada.jpg",
-                            PrecoPorNoite = 270.0,
-                            Titulo = "Pacote Completo - Hotel Traíra Dourada"
+                            Id = 7,
+                            Descricao = "Pacote de viagem completo para as Ilhas Faroé. Inclui estadia, voo e guia.",
+                            ImagemUrl = "/img/ilhasfaroe.jpg",
+                            PrecoPorNoite = 270m,
+                            Titulo = "Pacote Completo - Ilhas Faroé"
                         },
                         new
                         {
-                            Id = 2,
-                            Descricao = "Pacote para o Hotel Pedra do Monte que inclui café da manhã, almoço e jantar.",
-                            ImagemUrl = "/img/pedradomonte.jpg",
-                            PrecoPorNoite = 150.0,
+                            Id = 8,
+                            Descricao = "Pacote de viagem completo para Londres. Inclui estadia, voo e guia.",
+                            ImagemUrl = "/img/londres.jpg",
+                            PrecoPorNoite = 150m,
                             Titulo = "Pacote Completo - Hotel Pedra do Monte"
                         });
                 });
@@ -127,6 +127,46 @@ namespace AgenciaDeViagens.Data.Migrations
                     b.HasIndex("PaganteId");
 
                     b.ToTable("Pagamento");
+                });
+
+            modelBuilder.Entity("AgenciaDeViagens.Models.PeriodoIndisponivel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DataFim")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataInicio")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PacoteId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PacoteId");
+
+                    b.ToTable("PeriodosIndisponiveis");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DataFim = new DateTime(2026, 7, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DataInicio = new DateTime(2026, 7, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PacoteId = 7
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DataFim = new DateTime(2026, 8, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DataInicio = new DateTime(2026, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PacoteId = 8
+                        });
                 });
 
             modelBuilder.Entity("AgenciaDeViagens.Models.Reserva", b =>
@@ -369,6 +409,17 @@ namespace AgenciaDeViagens.Data.Migrations
                     b.Navigation("Cliente");
                 });
 
+            modelBuilder.Entity("AgenciaDeViagens.Models.PeriodoIndisponivel", b =>
+                {
+                    b.HasOne("AgenciaDeViagens.Models.Pacote", "Pacote")
+                        .WithMany("DatasOcupadas")
+                        .HasForeignKey("PacoteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pacote");
+                });
+
             modelBuilder.Entity("AgenciaDeViagens.Models.Reserva", b =>
                 {
                     b.HasOne("AgenciaDeViagens.Models.Cliente", "Cliente")
@@ -436,6 +487,11 @@ namespace AgenciaDeViagens.Data.Migrations
                     b.Navigation("Pagamentos");
 
                     b.Navigation("Reservas");
+                });
+
+            modelBuilder.Entity("AgenciaDeViagens.Models.Pacote", b =>
+                {
+                    b.Navigation("DatasOcupadas");
                 });
 #pragma warning restore 612, 618
         }

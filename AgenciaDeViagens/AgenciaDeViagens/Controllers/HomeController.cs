@@ -1,8 +1,10 @@
-using System.Diagnostics;
 using AgenciaDeViagens.Data;
 using AgenciaDeViagens.Models;
+using AgenciaDeViagens.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace AgenciaDeViagens.Controllers
 {
@@ -20,7 +22,35 @@ namespace AgenciaDeViagens.Controllers
         public IActionResult Index()
         {
             var pacotes = _context.Pacotes.ToList();
-            return View(pacotes);
+            var vm = new ReservarViewModel
+            {
+                Pacotes = pacotes
+            };
+            return View(vm);
+        }
+        [HttpPost]
+        public IActionResult Index(DateTime DataInicial, DateTime DataFinal)
+        {
+            /*
+            var idPacotesIndisponiveis = _context.PeriodosIndisponiveis
+                .Where(x => x.DataInicio <= DataInicial && x.DataFim >= DataFinal)
+                .Select(x => x.PacoteId)
+                .Distinct();
+            */
+            
+            List<Pacote> pacotesFiltrados = _context.Pacotes
+                .Include(p => p.DatasOcupadas)
+                .Where(p => !p.DatasOcupadas.Any(d =>
+                    d.DataInicio <= DataFinal && d.DataFim >= DataInicial
+                ))
+                .ToList();
+
+            foreach (var pacote in pacotesFiltrados)
+            {
+                Console.WriteLine($"Pacote: {pacote.Titulo}, Períodos Ocupados: {pacote.DatasOcupadas.Count}");
+            }
+
+            return View(pacotesFiltrados);
         }
 
         public IActionResult Privacy()
@@ -33,5 +63,25 @@ namespace AgenciaDeViagens.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult Pacote(int id)
+        {
+            var pacote = _context.Pacotes.FirstOrDefault(x => x.Id == id)!;
+            var vm = new ReservarViewModel
+            {
+                Titulo = pacote.Titulo,
+                Descricao = pacote.Descricao,
+                ImagemUrl = pacote.ImagemUrl
+            };
+
+            return View(vm);
+        }
+        /*
+        [HttpPost]
+        public IActionResult Pacote()
+        {
+            return
+        }
+        */
     }
 }
