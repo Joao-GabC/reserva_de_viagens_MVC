@@ -4,6 +4,7 @@ using AgenciaDeViagens.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Diagnostics;
 
 namespace AgenciaDeViagens.Controllers
@@ -19,6 +20,7 @@ namespace AgenciaDeViagens.Controllers
             _context = context;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             var pacotes = _context.Pacotes.ToList();
@@ -29,28 +31,29 @@ namespace AgenciaDeViagens.Controllers
             return View(vm);
         }
         [HttpPost]
-        public IActionResult Index(DateTime DataInicial, DateTime DataFinal)
+        public IActionResult Index(DateOnly DataInicial, DateOnly DataFinal)
         {
-            /*
-            var idPacotesIndisponiveis = _context.PeriodosIndisponiveis
-                .Where(x => x.DataInicio <= DataInicial && x.DataFim >= DataFinal)
-                .Select(x => x.PacoteId)
-                .Distinct();
-            */
-            
-            List<Pacote> pacotesFiltrados = _context.Pacotes
-                .Include(p => p.DatasOcupadas)
-                .Where(p => !p.DatasOcupadas.Any(d =>
-                    d.DataInicio <= DataFinal && d.DataFim >= DataInicial
-                ))
+            List<int> idPacotesindisponiveis = _context.PeriodosIndisponiveis
+                .Where(p =>
+                    (p.DataInicio <= DataInicial)
+                )
+                .Select(p => p.PacoteId)
+                .Distinct()
                 .ToList();
 
-            foreach (var pacote in pacotesFiltrados)
-            {
-                Console.WriteLine($"Pacote: {pacote.Titulo}, Períodos Ocupados: {pacote.DatasOcupadas.Count}");
-            }
 
-            return View(pacotesFiltrados);
+            List<Pacote> pacotesFiltrados = _context.Pacotes
+                .Where(p => !idPacotesindisponiveis.Contains(p.Id))
+                .ToList();
+
+            var vm = new ReservarViewModel
+            {
+                Pacotes = pacotesFiltrados
+            };
+
+            TempData["debug"] = $"DataInicial: {DataInicial}, DataFinal: {DataFinal}";
+
+            return View(vm);
         }
 
         public IActionResult Privacy()
@@ -71,17 +74,30 @@ namespace AgenciaDeViagens.Controllers
             {
                 Titulo = pacote.Titulo,
                 Descricao = pacote.Descricao,
-                ImagemUrl = pacote.ImagemUrl
+                ImagemUrl = pacote.ImagemUrl,
+                TextoDaPagina = pacote.TextoDaPagina
             };
 
             return View(vm);
         }
-        /*
         [HttpPost]
-        public IActionResult Pacote()
+        public IActionResult Pacote(int id, DateTime DataInicial, DateTime DataFinal)
         {
-            return
+            var pacote = _context.Pacotes.FirstOrDefault(x => x.Id == id)!;
+            var vm = new ReservarViewModel
+            {
+                Titulo = pacote.Titulo,
+                Descricao = pacote.Descricao,
+                ImagemUrl = pacote.ImagemUrl,
+                TextoDaPagina = pacote.TextoDaPagina,
+                DataInicial = DataInicial,
+                DataFinal = DataFinal,
+                PrecoPorNoite = pacote.PrecoPorNoite,
+                
+                PrecoTotal = (DataFinal - DataInicial).Days * pacote.PrecoPorNoite
+            };
+
+            return View(vm);
         }
-        */
     }
 }

@@ -17,9 +17,11 @@ namespace AgenciaDeViagens.Models
         public string Descricao { get; set; }
 
         [Required]
-        public string ImagemUrl { get; set; }
+        public string TextoDaPagina { get; set; }
 
         [Required]
+        public List<string> ImagemUrl { get; set; }
+
         public List<PeriodoIndisponivel> DatasOcupadas { get; set; }
     }
 }

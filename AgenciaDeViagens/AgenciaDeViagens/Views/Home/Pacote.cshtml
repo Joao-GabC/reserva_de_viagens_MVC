@@ -1,14 +1,91 @@
 ﻿@model AgenciaDeViagens.ViewModel.ReservarViewModel
+@{
+	int dias = (Model.DataFinal - Model.DataInicial).Days;
+}
 
 <div class="container">
 	<h1 class="ms-2">@Model.Titulo</h1>
 	<hr />
 
-	<section>
-		<form method="post">
-
-			<button type="submit" class="btn btn-primary">Calcular Preço Total</button>
-		</form>
+	<section class="mt-4">
+		<h3>Informações do local</h3>
+		<p class="mb-5 mt-3">@Html.Raw(Model.TextoDaPagina)</p>
 	</section>
+
+	<section>
+		<h3>Imagens do local</h3>
+		<div id="carouselExampleIndicators" class="carousel slide mt-4 mx-5 bg-black">
+			<div class="carousel-indicators">
+				<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+				<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+				<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+			</div>
+			<div class="carousel-inner">
+				<div class="carousel-item active">
+					<img src="@Model.ImagemUrl[0]" class="d-block w-100 img-content" alt="...">
+				</div>
+				@foreach(var image in Model.ImagemUrl.Skip(1))
+				{
+					<div class="carousel-item">
+						<img src="@image" class="d-block w-100 img-content" alt="...">
+					</div>
+				}
+			</div>
+			<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Previous</span>
+			</button>
+			<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Next</span>
+			</button>
+		</div>
+	</section>
+	
+	<p class="text-secondary fst-italic text-center mt-5">Agende já a data de estadia que nós calculamos o preço para você e resolvemos tudo com o hotel! ;)</p>
+	<hr />
+
+	<section class="row">
+		<div class="col p-0">
+			<form method="post">
+				<input name="id" value="@ViewContext.RouteData.Values["id"]" hidden />
+				<div class="row justify-content-center mb-2">
+					<label class="me-3">Insira aqui a data de check-in:</label>
+					<input asp-for="DataInicial" class="form-control" min="@DateTime.Today.ToString("yyyy-MM-dd")" value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" type="date" />
+				</div>
+			
+
+				<div class="row justify-content-center">
+					<label class="me-3">Insira aqui a data de check-out:</label>
+					<input asp-for="DataFinal" class="form-control" min="@DateTime.Today.ToString("yyyy-MM-dd")" value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" type="date" />
+				</div>
+
+				<button type="submit" class="btn btn-primary mt-3">Calcular Preço Total</button>
+			</form>
+		</div>
+	</section>
+
+	@if (Model.DataInicial != DateTime.MinValue)
+	{
+		<hr />
+		<section class="row mt-3">
+			<div class="col p-0">
+				@if(dias == 1)
+				{
+					<p class="mt-1">A estadia durará 1 dia. Total a pagar: <span class="h5 text-success">@Model.PrecoPorNoite R$</span></p>
+				}
+				else
+				{
+					<p class="mt-1">A estadia durará @dias dias. Total a pagar: <span class="h5 text-success">@(dias * Model.PrecoPorNoite) R$</span></p>
+				}
+			</div>
+			<div class="col p-0 d-flex justify-content-end">
+				<a asp-controller="Cliente" asp-action="HistoricoPagamento" class="btn btn-success">Realizar Pagamento</a>
+				<!--passar preço por tempdata-->
+			</div>
+		</section>
+	}
+
+	
 </div>
 

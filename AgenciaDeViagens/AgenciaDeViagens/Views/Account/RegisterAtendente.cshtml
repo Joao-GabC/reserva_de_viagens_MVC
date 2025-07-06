@@ -6,11 +6,17 @@
 <h1>@ViewData["Title"]</h1>
 
 <div>
-    <form asp-action="Register" method="post">
-        <h4>Crie uma nova conta.</h4>
+    <form method="post">
+        <h4>Crie uma nova conta de funcionário.</h4>
         <hr />
         <div asp-validation-summary="All" style="color: red;"></div>
 
+        <div>
+            <label asp-for="Nome"></label><br />
+            <input asp-for="Nome" />
+        </div>
+        <br />
+        <div>
         <div>
             <label asp-for="Email"></label><br />
             <input asp-for="Email" />
@@ -26,6 +32,11 @@
             <input asp-for="ConfirmPassword" />
         </div>
         <br />
-        <button type="submit">Registrar</button>
+        <div>
+            <label asp-for="Departamento"></label><br />
+            <input asp-for="Departamento" />
+        </div>
+        <br />
+        <button type="submit" class="btn btn-success">Registrar</button>
     </form>
 </div>

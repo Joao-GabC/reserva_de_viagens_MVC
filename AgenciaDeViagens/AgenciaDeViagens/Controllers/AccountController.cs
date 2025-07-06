@@ -104,6 +104,15 @@ namespace AgenciaDeViagens.Controllers
                     // Envie esse link por e-mail
                     await _emailSender.SendEmailAsync(user.Email, "Confirme seu e-mail", $"Clique aqui para confirmar: <a href='{confirmationLink}'>Confirmar</a>");
 
+                    var funcionarioNovo = new Funcionario
+                    {
+                        Nome = model.Nome,
+                        Email = model.Email,
+                        Departamento = model.Departamento,
+                    };
+                    _context.Funcionarios.Add(funcionarioNovo);
+                    _context.SaveChanges();
+
                     return View("EmailEnviado");
                 }
 

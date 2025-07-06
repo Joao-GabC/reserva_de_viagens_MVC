@@ -13,7 +13,8 @@ namespace AgenciaDeViagens.ViewModel
 
         public string Descricao { get; set; }
 
-        public string ImagemUrl { get; set; }
+        public string TextoDaPagina { get; set; }
+        public List<string> ImagemUrl { get; set; }
 
         public List<PeriodoIndisponivel> DatasOcupadas { get; set; }
 

@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace AgenciaDeViagens.Data.Migrations
+namespace AgenciaDeViagens.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250701234438_init")]
-    partial class init
+    [Migration("20250706154226_seed")]
+    partial class seed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,8 +35,7 @@ namespace AgenciaDeViagens.Data.Migrations
 
                     b.Property<string>("Cpf")
                         .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -48,17 +47,191 @@ namespace AgenciaDeViagens.Data.Migrations
 
                     b.Property<string>("Passaporte")
                         .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Telefone")
                         .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Clientes");
+                });
+
+            modelBuilder.Entity("AgenciaDeViagens.Models.Funcionario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Departamento")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Funcionarios");
+                });
+
+            modelBuilder.Entity("AgenciaDeViagens.Models.Pacote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImagemUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PrecoPorNoite")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("TextoDaPagina")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pacotes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Descricao = "Pacote de viagem completo para as Ilhas Faroé. Inclui estadia, voo e guia.",
+                            ImagemUrl = "[\"/img/ilhasfaroe.jpg\",\"/img/ilhasfaroe2.jpg\",\"/img/ilhasfaroe3.jpg\"]",
+                            PrecoPorNoite = 270m,
+                            TextoDaPagina = "As Ilhas Faroé são um arquipélago de 18 ilhas localizadas no Atlântico Norte, entre a Islândia, a Noruega e a Escócia. Elas formam um território autônomo sob o Reino da Dinamarca e possuem cerca de 50 mil habitantes, com a capital localizada em Tórshavn.<br /><br />O clima é frio e úmido, com muita neblina, ventos fortes e chuvas frequentes. A paisagem é composta por montanhas, fiordes profundos e penhascos à beira-mar, criando um cenário dramático e isolado. A pesca é a principal atividade econômica.<br /><br />A cultura feroesa tem raízes nórdicas e é marcada pela preservação da língua feroesa, da música tradicional e de costumes antigos. Apesar do isolamento, as ilhas mantêm uma vida moderna e uma forte identidade cultural.",
+                            Titulo = "Pacote Completo - Ilhas Faroé"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Descricao = "Pacote de viagem completo para Londres. Inclui estadia, voo e guia.",
+                            ImagemUrl = "[\"/img/londres.jpg\",\"/img/londres2.jpg\",\"/img/londres3.jpg\"]",
+                            PrecoPorNoite = 150m,
+                            TextoDaPagina = "Londres é a capital do Reino Unido e uma das cidades mais influentes do mundo. Localizada no sudeste da Inglaterra, às margens do rio Tâmisa, é um importante centro político, financeiro e cultural. A cidade abriga cerca de 9 milhões de pessoas e recebe milhões de turistas todos os anos.<br /><br />Entre seus marcos mais famosos estão o Big Ben, a Torre de Londres, o Palácio de Buckingham e a roda-gigante London Eye. Londres também é conhecida por seus museus, teatros e parques, como o Museu Britânico, a National Gallery e o Hyde Park.<br /><br />A cidade é extremamente diversa, com pessoas de todas as partes do mundo vivendo e trabalhando ali. Essa diversidade se reflete na culinária, nas artes e na vida cotidiana, fazendo de Londres um lugar dinâmico e multicultural.",
+                            Titulo = "Pacote Completo - Londres"
+                        });
+                });
+
+            modelBuilder.Entity("AgenciaDeViagens.Models.Pagamento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DataDeCompra")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DescCompra")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PaganteId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Preco")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaganteId");
+
+                    b.ToTable("Pagamentos");
+                });
+
+            modelBuilder.Entity("AgenciaDeViagens.Models.PeriodoIndisponivel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateOnly>("DataFim")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly>("DataInicio")
+                        .HasColumnType("date");
+
+                    b.Property<int>("PacoteId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PacoteId");
+
+                    b.ToTable("PeriodosIndisponiveis");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DataFim = new DateOnly(2026, 7, 30),
+                            DataInicio = new DateOnly(2026, 7, 10),
+                            PacoteId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DataFim = new DateOnly(2026, 8, 30),
+                            DataInicio = new DateOnly(2026, 8, 10),
+                            PacoteId = 2
+                        });
+                });
+
+            modelBuilder.Entity("AgenciaDeViagens.Models.Reserva", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DataFim")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataInicio")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("PrecoTotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ReservanteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReservanteId");
+
+                    b.ToTable("Reservas");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -259,6 +432,39 @@ namespace AgenciaDeViagens.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AgenciaDeViagens.Models.Pagamento", b =>
+                {
+                    b.HasOne("AgenciaDeViagens.Models.Cliente", "Cliente")
+                        .WithMany("Pagamentos")
+                        .HasForeignKey("PaganteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+                });
+
+            modelBuilder.Entity("AgenciaDeViagens.Models.PeriodoIndisponivel", b =>
+                {
+                    b.HasOne("AgenciaDeViagens.Models.Pacote", "Pacote")
+                        .WithMany("DatasOcupadas")
+                        .HasForeignKey("PacoteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pacote");
+                });
+
+            modelBuilder.Entity("AgenciaDeViagens.Models.Reserva", b =>
+                {
+                    b.HasOne("AgenciaDeViagens.Models.Cliente", "Cliente")
+                        .WithMany("Reservas")
+                        .HasForeignKey("ReservanteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -308,6 +514,18 @@ namespace AgenciaDeViagens.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AgenciaDeViagens.Models.Cliente", b =>
+                {
+                    b.Navigation("Pagamentos");
+
+                    b.Navigation("Reservas");
+                });
+
+            modelBuilder.Entity("AgenciaDeViagens.Models.Pacote", b =>
+                {
+                    b.Navigation("DatasOcupadas");
                 });
 #pragma warning restore 612, 618
         }

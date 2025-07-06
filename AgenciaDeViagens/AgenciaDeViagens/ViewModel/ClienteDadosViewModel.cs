@@ -10,10 +10,10 @@ namespace AgenciaDeViagens.ViewModel
 
         //-------------------------------------------------------
 
-        public ICollection<Pagamento> Pagamentos { get; set; }
+        public ICollection<Pagamento>? Pagamentos { get; set; }
 
         //-------------------------------------------------------
 
-        public ICollection<Reserva> Reservas { get; set; }
+        public ICollection<Reserva>? Reservas { get; set; }
     }
 }

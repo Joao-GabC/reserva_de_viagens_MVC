@@ -7,7 +7,7 @@
 
 <div>
     <form asp-action="Register" method="post">
-        <h4>Crie uma nova conta.</h4>
+        <h4>Crie uma nova conta de cliente.</h4>
         <hr />
         <div asp-validation-summary="All" style="color: red;"></div>
 
@@ -44,7 +44,7 @@
             <input asp-for="Passaporte" />
         </div>
         <br />
-        <button type="submit">Registrar</button>
+        <button type="submit" class="btn btn-success">Registrar</button>
     </form>
     <a asp-controller="Account" asp-action="RegisterAtendente" class="btn btn-primary">Fazer conta de atendente</a>
 </div>

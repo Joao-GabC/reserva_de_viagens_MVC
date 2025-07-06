@@ -9,8 +9,8 @@ namespace AgenciaDeViagens.Models
         public int Id { get; set; }
 
 
-        public DateTime DataInicio { get; set; }
-        public DateTime DataFim { get; set; }
+        public DateOnly DataInicio { get; set; }
+        public DateOnly DataFim { get; set; }
 
         public int PacoteId { get; set; }
         [ForeignKey("PacoteId")]
