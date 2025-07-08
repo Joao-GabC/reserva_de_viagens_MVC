@@ -1,4 +1,5 @@
-﻿@model AgenciaDeViagens.ViewModel.ReservarViewModel
+﻿@using System.Text.Json
+@model AgenciaDeViagens.ViewModel.ReservarViewModel
 @{
 	int dias = (Model.DataFinal - Model.DataInicial).Days;
 }
@@ -47,17 +48,18 @@
 
 	<section class="row">
 		<div class="col p-0">
-			<form method="post">
-				<input name="id" value="@ViewContext.RouteData.Values["id"]" hidden />
-				<div class="row justify-content-center mb-2">
-					<label class="me-3">Insira aqui a data de check-in:</label>
-					<input asp-for="DataInicial" class="form-control" min="@DateTime.Today.ToString("yyyy-MM-dd")" value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" type="date" />
-				</div>
-			
+			<form method="post" asp-controller="Home" asp-action="CalcularPreco">
+				<input asp-for="Id" asp-route-id="@Model.Id" hidden />
 
-				<div class="row justify-content-center">
-					<label class="me-3">Insira aqui a data de check-out:</label>
-					<input asp-for="DataFinal" class="form-control" min="@DateTime.Today.ToString("yyyy-MM-dd")" value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" type="date" />
+				<div class="row mb-1">
+					<div class="col-6">
+						<label class="me-3">Insira aqui a data de check-in:</label>
+						<input name="DataInicial" class="form-control datepicker" type="date" id="checkin"/>
+					</div>
+					<div class="col-6">
+						<label class="me-3">Insira aqui a data de check-out:</label>
+						<input name="DataFinal" class="form-control datepicker" type="date" id="checkout" />
+					</div>
 				</div>
 
 				<button type="submit" class="btn btn-primary mt-3">Calcular Preço Total</button>
@@ -68,7 +70,7 @@
 	@if (Model.DataInicial != DateTime.MinValue)
 	{
 		<hr />
-		<section class="row mt-3">
+		<section class="row mt-3" id="total">
 			<div class="col p-0">
 				@if(dias == 1)
 				{
@@ -80,12 +82,49 @@
 				}
 			</div>
 			<div class="col p-0 d-flex justify-content-end">
-				<a asp-controller="Cliente" asp-action="HistoricoPagamento" class="btn btn-success">Realizar Pagamento</a>
-				<!--passar preço por tempdata-->
+				<form method="post" asp-action="Pagar">
+					<input name="idPacote" value="@Model.Id" hidden />
+					<input name="PrecoTotal" value="@Model.PrecoTotal" hidden />
+					<input name="DataInicial" value="@Model.DataInicial" hidden />
+					<input name="DataFinal" value="@Model.DataFinal" hidden />
+					<button type="submit" class="btn btn-success">Realizar Pagamento</button>
+				</form>
 			</div>
 		</section>
 	}
-
-	
 </div>
 
+@{
+	var datasIndisponiveisJson = JsonSerializer.Serialize(
+		Model.DatasOcupadas.Select(d => new
+		{
+			from = d.DataInicio.ToString("dd-MM-yyyy"),
+			to = d.DataFim.ToString("dd-MM-yyyy")
+		})
+	);
+}
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const datasIndisponiveis = @Html.Raw(datasIndisponiveisJson);
+		// Inicializa o flatpickr para o check-in
+		const checkin = flatpickr("#checkin", {
+			dateFormat: "d-m-Y",
+			minDate: "today",
+			disable: datasIndisponiveis,
+			onChange: function (selectedDates, dateStr) {
+				if (selectedDates.length > 0) {
+					const minCheckoutDate = new Date(selectedDates[0]);
+					minCheckoutDate.setDate(minCheckoutDate.getDate() + 1);
+					checkout.set("minDate", minCheckoutDate);
+				}
+			}
+		});
+
+		// Inicializa o flatpickr para o check-out
+		const checkout = flatpickr("#checkout", {
+			dateFormat: "d-m-Y",
+			clickOpens: true,
+			allowInput: true
+		});
+	});
+</script>

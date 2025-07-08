@@ -20,33 +20,49 @@ namespace AgenciaDeViagens.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            string staffEmail = User.FindFirstValue(ClaimTypes.Email)!;
-            string staffNome = _context.Funcionarios.FirstOrDefault(x => x.Email == staffEmail)!.Nome;
-
-            var vm = new AreaDoFuncionarioViewModel
+            var vm = new AreaDoFuncionarioViewModel { };
+            if(User.IsInRole("Atendente"))
             {
-                Nome = staffNome
-            };
+                string staffEmail = User.FindFirstValue(ClaimTypes.Email)!;
+                string staffNome = _context.Funcionarios.FirstOrDefault(x => x.Email == staffEmail)!.Nome;
 
-            return View(vm);
+                vm = new AreaDoFuncionarioViewModel
+                {
+                    Nome = staffNome
+                };
+            }
+            else
+            {
+                vm = new AreaDoFuncionarioViewModel
+                {
+                    Nome = "Admin"
+                };
+            }
+
+                return View(vm);
         }
         //action chamada dentro do index
         [HttpPost]
         public async Task<IActionResult> AdicionarPacote(List<IFormFile> imagens, AreaDoFuncionarioViewModel vModel, DateOnly DataInicial, DateOnly DataFinal) //model da página é a viewmodel AreaDoFuncionarioViewModel
         {
+            var pasta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img");
+            Directory.CreateDirectory(pasta);
+
             List<string> novasImagens = new List<string>();
             if (imagens != null && imagens.Count > 0)
             {
-                foreach(var imagem in imagens)
+                foreach (var imagem in imagens)
                 {
                     var nomeArquivo = Path.GetFileName(imagem.FileName);
-                    var caminho = Path.Combine("wwwroot/imagens", nomeArquivo);
+                    var caminhoFisico = Path.Combine(pasta, nomeArquivo); // Caminho real no disco
+                    var caminhoWeb = $"/img/{nomeArquivo}"; // Caminho para uso no HTML
 
-                    using (var caminhoFoto = new FileStream(caminho, FileMode.Create))
+                    using (var caminhoFoto = new FileStream(caminhoFisico, FileMode.Create))
                     {
                         imagem.CopyTo(caminhoFoto);
                     }
-                    novasImagens.Add(caminho);
+
+                    novasImagens.Add(caminhoWeb); // Este vai para o banco ou modelo
                 }
             }
 
@@ -69,17 +85,19 @@ namespace AgenciaDeViagens.Controllers
             _context.Pacotes.Add(pacoteNovo);
             _context.SaveChanges();
 
-
-            var periodoIndisponivelPacote = new PeriodoIndisponivel
+            if (!(DataFinal == default(DateOnly) || DataInicial == default(DateOnly)))
             {
-                DataInicio = DataInicial,
-                DataFim = DataFinal,
-                PacoteId = pacoteNovo.Id
-            };
-            _context.PeriodosIndisponiveis.Add(periodoIndisponivelPacote);
-            _context.SaveChanges();
+                var periodoIndisponivelPacote = new PeriodoIndisponivel
+                {
+                    DataInicio = DataInicial,
+                    DataFim = DataFinal,
+                    PacoteId = pacoteNovo.Id
+                };
+                _context.PeriodosIndisponiveis.Add(periodoIndisponivelPacote);
+                _context.SaveChanges();
+            }
 
-            return RedirectToAction("Pacote", "Home", pacoteNovo.Id);
+            return RedirectToAction("Index", "Home");
         }
     }
 }

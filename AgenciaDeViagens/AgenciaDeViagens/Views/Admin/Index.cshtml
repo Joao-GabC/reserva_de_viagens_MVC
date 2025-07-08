@@ -1,0 +1,46 @@
+﻿@using System.Text.Json
+@model AgenciaDeViagens.ViewModel.DashboardViewModel
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <h1>Número de vendas por destino</h1>
+            <canvas id="vendasPDestino"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+@{
+    var top5Pacotes = Model.Pacotes
+    .OrderByDescending(p => p.NumDeVendas)
+    .Take(5)
+    .ToList();
+
+    var top5Titulos = top5Pacotes.Select(p => p.Titulo);
+    var top5Vendas = top5Pacotes.Select(p => p.NumDeVendas);
+
+}
+<script>
+    const ctx = document.getElementById('vendasPDestino');
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: @Html.Raw(JsonSerializer.Serialize(top5Titulos)), //forech item in top5Pacotes, colocar item.Titulo
+        datasets: [{
+          label: 'nº de vendas',
+          data: @Html.Raw(JsonSerializer.Serialize(top5Vendas)), //forech item in top5Pacotes, colocar item.NumVendas
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+</script>

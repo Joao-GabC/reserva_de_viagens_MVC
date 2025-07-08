@@ -11,32 +11,39 @@
         <hr />
         <div asp-validation-summary="All" style="color: red;"></div>
 
-        <div>
-            <label asp-for="Nome"></label><br />
-            <input asp-for="Nome" />
+        <h5>Dados da Conta</h5>
+        <div class="d-flex mb-3">
+            <div class="me-3">
+                <label asp-for="Email"></label><br />
+                <input asp-for="Email" class="form-control" />
+            </div>
+
+            <div class="me-3">
+                <label>Senha</label><br />
+                <input asp-for="Password" class="form-control" />
+            </div>
+
+            <div>
+                <label asp-for="ConfirmPassword"></label><br />
+                <input asp-for="ConfirmPassword" class="form-control" />
+            </div>
         </div>
-        <br />
-        <div>
-        <div>
-            <label asp-for="Email"></label><br />
-            <input asp-for="Email" />
+
+        <h5>Seus dados</h5>
+        <div class="d-flex mb-3">
+            <div class="me-3">
+                <label asp-for="Nome"></label><br />
+                <input asp-for="Nome" class="form-control" />
+            </div>
+            <div>
+                <label asp-for="Departamento"></label><br />
+                <input asp-for="Departamento" class="form-control" />
+            </div>
         </div>
-        <br />
-        <div>
-            <label asp-for="Password"></label><br />
-            <input asp-for="Password" />
+
+        <div class="d-flex">
+            <button type="submit" class="btn btn-success me-3">Registrar</button>
+            <a asp-controller="Account" asp-action="Register" class="btn btn-primary">Fazer conta de cliente</a>
         </div>
-        <br />
-        <div>
-            <label asp-for="ConfirmPassword"></label><br />
-            <input asp-for="ConfirmPassword" />
-        </div>
-        <br />
-        <div>
-            <label asp-for="Departamento"></label><br />
-            <input asp-for="Departamento" />
-        </div>
-        <br />
-        <button type="submit" class="btn btn-success">Registrar</button>
     </form>
 </div>

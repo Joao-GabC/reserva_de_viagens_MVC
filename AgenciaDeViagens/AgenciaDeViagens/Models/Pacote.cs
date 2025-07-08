@@ -22,6 +22,9 @@ namespace AgenciaDeViagens.Models
         [Required]
         public List<string> ImagemUrl { get; set; }
 
+        [Required]
+        public int NumDeVendas { get; set; } = 0;
+
         public List<PeriodoIndisponivel> DatasOcupadas { get; set; }
     }
 }

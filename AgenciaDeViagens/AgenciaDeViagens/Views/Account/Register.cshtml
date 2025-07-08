@@ -3,48 +3,59 @@
     ViewData["Title"] = "Registrar";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+    <h4>Crie uma nova conta de cliente.</h4>
+    <hr />
+    <div asp-validation-summary="All" style="color: red;"></div>
+    <div class="border border-1 shadow p-3 row">
+        <form asp-action="Register" method="post">
 
-<div>
-    <form asp-action="Register" method="post">
-        <h4>Crie uma nova conta de cliente.</h4>
-        <hr />
-        <div asp-validation-summary="All" style="color: red;"></div>
+            <h5 class="mt-2 mb-1">Dados da Conta</h5>
+            <div class="col mb-3">
+                <div class="mt-2">
+                    <label asp-for="Email"></label><br />
+                    <input asp-for="Email" class="form-control" />
+                </div>
 
-        <div>
-            <label asp-for="Email"></label><br />
-            <input asp-for="Email" />
-        </div>
-        <br />
-        <div>
-            <label asp-for="Password"></label><br />
-            <input asp-for="Password" />
-        </div>
-        <br />
-        <div>
-            <label asp-for="ConfirmPassword"></label><br />
-            <input asp-for="ConfirmPassword" />
-        </div>
-        <div>
-            <label asp-for="Nome"></label><br />
-            <input asp-for="Nome" />
-        </div>
-        <br />
-        <div>
-            <label asp-for="Telefone"></label><br />
-            <input asp-for="Telefone" />
-        </div>
-        <br />
-        <div>
-            <label asp-for="Cpf"></label><br />
-            <input asp-for="Cpf" />
-        </div>
-        <div>
-            <label asp-for="Passaporte"></label><br />
-            <input asp-for="Passaporte" />
-        </div>
-        <br />
-        <button type="submit" class="btn btn-success">Registrar</button>
-    </form>
-    <a asp-controller="Account" asp-action="RegisterAtendente" class="btn btn-primary">Fazer conta de atendente</a>
+                <div class="mt-2">
+                    <label>Senha</label><br />
+                    <input asp-for="Password" class="form-control" />
+                </div>
+
+                <div class="mt-2">
+                    <label asp-for="ConfirmPassword"></label><br />
+                    <input asp-for="ConfirmPassword" class="form-control" />
+                </div>
+            </div>
+
+            <h5 class="mt-4 mb-1">Dados do Cliente</h5>
+            <div class="d-flex mb-3">
+                <div class="me-3">
+                    <label asp-for="Nome"></label><br />
+                    <input asp-for="Nome" class="form-control" />
+                </div>
+
+                <div class="me-3">
+                    <label asp-for="Telefone"></label><br />
+                    <input asp-for="Telefone" class="form-control" />
+                </div>
+
+                <div class="me-3">
+                    <label asp-for="Cpf"></label><br />
+                    <input asp-for="Cpf" class="form-control" />
+                </div>
+
+                <div class="me-3">
+                    <label asp-for="Passaporte"></label><br />
+                    <input asp-for="Passaporte" class="form-control" />
+                </div>
+            </div>
+
+            <div class="d-flex">
+                <button type="submit" class="btn btn-success me-3">Registrar</button>
+                <a asp-controller="Account" asp-action="RegisterAtendente" class="btn btn-primary">Fazer conta de atendente</a>
+            </div>
+        </form>
+    </div>
 </div>

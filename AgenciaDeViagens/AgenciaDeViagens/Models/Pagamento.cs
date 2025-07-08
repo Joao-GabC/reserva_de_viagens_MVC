@@ -9,13 +9,13 @@ namespace AgenciaDeViagens.Models
         public int Id { get; set; }
 
         [Required]
-        public double Preco { get; set; }
+        public decimal Preco { get; set; }
 
         [Required]
         public string DescCompra { get; set; }
 
         [Required]
-        public DateTime DataDeCompra { get; set; }
+        public string DataDeCompra { get; set; }
 
         [Required]
         public int PaganteId { get; set; }

@@ -6,7 +6,7 @@ namespace AgenciaDeViagens.ViewModel
     public class ReservarViewModel
     {
         //parte do pacote
-
+        public int Id { get; set; }
         public string Titulo { get; set; }
 
         public decimal PrecoPorNoite { get; set; }
@@ -30,8 +30,7 @@ namespace AgenciaDeViagens.ViewModel
         [DataType(DataType.Date)]
         public DateTime DataFinal { get; set; }
 
-        [Required]
-
+        //parte do pagamento
         public decimal PrecoTotal { get; set; } = 0;
     }
 }

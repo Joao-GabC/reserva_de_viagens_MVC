@@ -12,23 +12,13 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr>
-			@foreach (var item in Model.Pagamentos)
-			{
+		@foreach (var item in Model.Pagamentos)
+		{
+			<tr>
 				<td>@item.Preco</td>
-			}
-		</tr>
-		<tr>
-			@foreach (var item in Model.Pagamentos)
-			{
 				<td>@item.DescCompra</td>
-			}
-		</tr>
-		<tr>
-			@foreach (var item in Model.Pagamentos)
-			{
 				<td>@item.DataDeCompra</td>
-			}
-		</tr>
+			</tr>
+		}
 	</tbody>
 </table>

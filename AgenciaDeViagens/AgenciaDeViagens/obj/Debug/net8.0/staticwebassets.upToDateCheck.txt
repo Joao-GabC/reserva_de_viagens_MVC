@@ -1,5 +1,17 @@
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\img\grecia.png
+wwwroot\img\grecia2.png
+wwwroot\img\grecia3.png
+wwwroot\img\ilhasfaroe.jpg
+wwwroot\img\ilhasfaroe2.jpg
+wwwroot\img\ilhasfaroe3.jpg
+wwwroot\img\londres.jpg
+wwwroot\img\londres2.jpg
+wwwroot\img\londres3.jpg
+wwwroot\img\machupicchu.jpg
+wwwroot\img\machupicchu2.jpg
+wwwroot\img\machupicchu3.jpg
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
@@ -33,6 +45,7 @@ wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
 wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\desktop.ini
 wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js
 wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
 wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
@@ -58,10 +71,3 @@ wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
-wwwroot\img\ilhasfaroe.jpg
-wwwroot\img\londres.jpg
-wwwroot\lib\bootstrap\dist\css\desktop.ini
-wwwroot\img\ilhasfaroe2.jpg
-wwwroot\img\ilhasfaroe3.jpg
-wwwroot\img\londres2.jpg
-wwwroot\img\londres3.jpg

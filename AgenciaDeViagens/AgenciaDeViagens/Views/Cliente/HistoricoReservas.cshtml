@@ -12,23 +12,13 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr>
-			@foreach (var item in Model.Reservas)
-			{
+		@foreach (var item in Model.Reservas)
+		{
+			<tr>
 				<td>@item.Titulo</td>
-			}
-		</tr>
-		<tr>
-			@foreach (var item in Model.Reservas)
-			{
 				<td>@item.DataInicio até @item.DataFim</td>
-			}
-		</tr>
-		<tr>
-			@foreach (var item in Model.Reservas)
-			{
 				<td>@item.PrecoTotal</td>
-			}
-		</tr>
+			</tr>
+		}
 	</tbody>
 </table>
